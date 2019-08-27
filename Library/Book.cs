@@ -1,0 +1,36 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Library
+{
+    public class Book
+    {
+        public string ISBN { get; set; }
+        public string Authors { get; set; }
+        public string Name { get; set; }
+        public string Title { get; set; }
+        public DateTime? ReleaseDate { get; set; }
+        public string Language { get; set; }
+        public level Level { get; set; }
+
+
+
+
+        public Book(string author, string name, string publisher)
+        {
+            this.Authors = author;
+            this.Name = name;
+            this.Title = publisher;
+        }
+
+        public Book()
+        {
+
+        }
+
+        public enum level {beginner, intermediate, advanced }
+    }
+}
