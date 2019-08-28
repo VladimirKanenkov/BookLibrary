@@ -12,7 +12,7 @@ namespace LibraryAPI
         public Author Authors { get; set; }
         public string Name { get; set; }
         public string Title { get; set; }
-        public DateTime? ReleaseDate { get; set; }
+        public int ReleaseDate { get; set; }
         /// <summary>
         /// Язык программирования
         /// </summary>
@@ -24,20 +24,23 @@ namespace LibraryAPI
         public string BookLanguage { get; set; }
         public Grade? Rating { get; set; }
 
-        public Book(string iSBN, string name, string title, DateTime? releaseDate, 
-            string language, Level userLevel, string bookLanguage, Grade? rating)
+        public Book(string iSBN, string name, string title, string releaseDate, 
+            string language, string userLevel, string bookLanguage, string rating)
         {
             ISBN = iSBN;  //new Guid().ToString();
             Authors = new Author(name);
             Name = name;
             Title = title;
-            ReleaseDate = releaseDate;
+            ReleaseDate = int.Parse(releaseDate);
             Language = language;
-            UserLevel = userLevel;
+            UserLevel = (Level)Enum.Parse(typeof(Level), userLevel);
             BookLanguage = bookLanguage;
-            Rating = rating;
+            Rating = (Grade)Enum.Parse(typeof(Grade), rating);
         }
 
+        public Book()
+        {
+        }
     }
 
     public class Author
@@ -47,6 +50,9 @@ namespace LibraryAPI
         public Author(string name)
         {
             Name = name;
+        }
+        public Author()
+        {
         }
     }
 

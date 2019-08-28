@@ -26,8 +26,8 @@ namespace LibraryAPI
             if (readLine != null)
             {
                 string[] temp = readLine.Split(',');
-                Books.Add(new Book(temp[0], temp[1], temp[2],  DateTime.Parse(temp[3]), temp[4],
-                    (Level)Enum.Parse(typeof(Level), temp[5]), temp[6], (Grade)Enum.Parse(typeof(Grade), temp[7])));
+                Books.Add(new Book(temp[0], temp[1], temp[2],  temp[3], temp[4],
+                    temp[5], temp[6], temp[7]));
             }
         }
 
@@ -49,7 +49,10 @@ namespace LibraryAPI
 
         }
 
+        public void Find()
+        {
 
+        }
 
 
 
