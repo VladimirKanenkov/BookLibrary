@@ -10,7 +10,6 @@ namespace LibraryAPI
     {
         public string ISBN { get; set; }
         public Author Authors { get; set; }
-        public string Name { get; set; }
         public string Title { get; set; }
         public int ReleaseDate { get; set; }
         /// <summary>
@@ -29,7 +28,6 @@ namespace LibraryAPI
         {
             ISBN = iSBN;  //new Guid().ToString();
             Authors = new Author(name);
-            Name = name;
             Title = title;
             ReleaseDate = int.Parse(releaseDate);
             Language = language;

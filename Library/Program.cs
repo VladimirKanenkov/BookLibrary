@@ -7,7 +7,7 @@ using LibraryAPI;
 
 namespace Library
 {
-    class Program
+    public class Program
     {
         private static List<Book> books;
 
@@ -16,8 +16,7 @@ namespace Library
             //List<Book> b = new List<Book>();
             //FillWithData(b);
             //SerializeToXML(b);
-            books = !File.Exists("lib.xml") ? new List<Book>() : DeserializeFromXML();
-
+            books = !File.Exists("lib.xml") ? new List<Book>() : DeserializeFromXML("lib.xml");
             Commands command = new Commands(books);
             bool flag = true;
 
@@ -47,12 +46,16 @@ namespace Library
                             command.Edit();
                             break;
                         case 5:
+                            command.Find();
                             break;
                         case 6:
+                            command.List();
                             break;
                         case 7:
+                            command.Export();
                             break;
                         case 8:
+                            command.Import();
                             break;
                         case 9:
                             flag = false;
@@ -73,10 +76,10 @@ namespace Library
             }
         }
 
-        static List<Book> DeserializeFromXML()
+        static public List<Book> DeserializeFromXML(string file)
         {
             XmlSerializer deserializer = new XmlSerializer(typeof(List<Book>));
-            TextReader textReader = new StreamReader(@"lib.xml");
+            TextReader textReader = new StreamReader(file);
             List<Book> lib = (List<Book>)deserializer.Deserialize(textReader);
             textReader.Close();
 
@@ -91,13 +94,15 @@ namespace Library
             textWriter.Close();
         }
 
+
+
         static public void FillWithData(List<Book> lib)
         {
             lib.Add(new Book(Guid.NewGuid().ToString(), "Лафоре Р.", "Объектно-ориентированное программирование в С++", "2016" , "ru", "intermediate", "C++", "bad"));
             lib.Add(new Book(Guid.NewGuid().ToString(), "Лафоре Р.", "Структуры данных и алгоритмы в Java. 2-е изд.", "2016", "ru", "intermediate", "Java", "good"));
             lib.Add(new Book(Guid.NewGuid().ToString(), "Эккель Б.", "Философия Java. Библиотека программиста. 4-е изд.", "2015", "ru", "intermediate", "Java", "bad"));
             lib.Add(new Book(Guid.NewGuid().ToString(), "Гоше Х.", "HTML5. Для профессионалов. 2-е изд.", "2015", "ru", "advanced", "HTML5", "good"));
-            lib.Add(new Book(Guid.NewGuid().ToString(), "Макфарланд Д.", "Новая большая книга CSS ", "2016", "ru", "intermediate", "CSS", "bad"));
+            lib.Add(new Book(Guid.NewGuid().ToString(), "Макфарланд Д.", "Новая большая книга CSS", "2016", "ru", "intermediate", "CSS", "bad"));
             lib.Add(new Book(Guid.NewGuid().ToString(), "Любанович Б.", "Простой Python. Современный стиль программирования", "2016", "ru", "beginner", "Python", "good"));
             lib.Add(new Book(Guid.NewGuid().ToString(), "Усов В. А.", "Swift. Основы разработки приложений под iOS и OS X. 2-е изд. ", "2016", "ru", "beginner", "Swift", "good"));
             lib.Add(new Book(Guid.NewGuid().ToString(), "Рихтер Д.", "CLR via C#. Программирование на платформе Microsoft .NET Framework 4.5 на языке C#. 4-е изд. ", "2016", "en", "advanced", "C#", "great"));
