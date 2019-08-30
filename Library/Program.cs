@@ -13,9 +13,6 @@ namespace Library
 
         static void Main(string[] args)
         {
-            //List<Book> b = new List<Book>();
-            //FillWithData(b);
-            //SerializeToXML(b);
             books = !File.Exists("lib.xml") ? new List<Book>() : DeserializeFromXML("lib.xml");
             Commands command = new Commands(books);
             bool flag = true;
@@ -95,7 +92,10 @@ namespace Library
         }
 
 
-
+        /// <summary>
+        /// Заполнение данными
+        /// </summary>
+        /// <param name="lib"></param>
         static public void FillWithData(List<Book> lib)
         {
             lib.Add(new Book(Guid.NewGuid().ToString(), "Лафоре Р.", "Объектно-ориентированное программирование в С++", "2016" , "ru", "intermediate", "C++", "bad"));
