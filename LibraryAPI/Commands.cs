@@ -64,8 +64,8 @@ namespace LibraryAPI
 
         public void Find()
         {
-            Console.WriteLine("1. ISBN\t 2. Имя автора \t 3. Название (или фрагмент названия)");
-            Console.WriteLine(Books[0].GetString());
+            //Console.WriteLine("1. ISBN\t 2. Имя автора \t 3. Название (или фрагмент названия)");
+            //Console.WriteLine(Books[0].GetString());
             
         }
 
