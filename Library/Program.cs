@@ -9,21 +9,24 @@ namespace Library
 {
     public class Program
     {
-        private static List<Book> books;
+        static List<Book> books;
+        static string localisation;
 
         static void Main(string[] args)
         {
             books = !File.Exists("lib.xml") ? new List<Book>() : DeserializeFromXML("lib.xml");
             Commands command = new Commands(books);
             bool flag = true;
+            localisation = ReadSettings("settings.dat");
+
 
             while (flag)
             {
                 ConsoleColor color = Console.ForegroundColor;
                 Console.ForegroundColor = ConsoleColor.DarkGreen;
-                Console.WriteLine("1. Cохранить \t 2. Добавить  \t 3. Удалить");
+                Console.WriteLine("1. Изменить язык интерфейса \t 2. Добавить  \t 3. Удалить");
                 Console.WriteLine("4. Редактировать \t 5. Поиск  \t 6. Список по критерию");
-                Console.WriteLine("7. Экспорт в файл \t 8. Импорт из файла \t 9. Выйти из программы");
+                Console.WriteLine("7. Экспорт в файл \t 8. Импорт из файла \t 10. Сохранить \t 11. Выйти из программы ");
                 Console.WriteLine("Введите номер пункта:");
                 Console.ForegroundColor = color;
                 try
@@ -55,6 +58,9 @@ namespace Library
                             command.Import();
                             break;
                         case 9:
+                            command.Save();
+                            break;
+                        case 10:
                             flag = false;
                             continue;
                         default:
@@ -73,6 +79,22 @@ namespace Library
             }
         }
 
+        static string ReadSettings(string fileName)
+        {
+            if (!File.Exists(fileName))
+                using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
+                {
+                    writer.Write("ru");
+                }
+
+            using (BinaryReader reader = new BinaryReader(File.Open(fileName, FileMode.Open)))
+            {
+                return reader.ReadString();
+            }
+        }
+
+
+
         static public List<Book> DeserializeFromXML(string file)
         {
             XmlSerializer deserializer = new XmlSerializer(typeof(List<Book>));
@@ -89,6 +111,13 @@ namespace Library
             TextWriter textWriter = new StreamWriter(@"lib.xml");
             serializer.Serialize(textWriter, lib);
             textWriter.Close();
+        }
+
+        void ChangeInterfaseLocalisation(string datPath)
+        {
+            BinaryReader bReader = new BinaryReader(new FileStream(datPath, FileMode.Open));
+            bool result = bReader.ReadBoolean();
+            bReader.Close();
         }
 
 
