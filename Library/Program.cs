@@ -10,24 +10,36 @@ namespace Library
     public class Program
     {
         static List<Book> books;
-        static string localisation;
+        static readonly string settings = "settings.dat";
+        static readonly string library = "lib.xml";
 
         static void Main(string[] args)
         {
-            books = !File.Exists("lib.xml") ? new List<Book>() : DeserializeFromXML("lib.xml");
+            books = !File.Exists(library) ? new List<Book>() : DeserializeFromXML(library);
             Commands command = new Commands(books);
             bool flag = true;
-            localisation = ReadSettings("settings.dat");
-
+            string localisation;
+            IUserInterface RussianInterface = new RussianUI();
+            IUserInterface EnglishIntarface = new EnglishUI();
+            IUserInterface userInerface;
 
             while (flag)
             {
                 ConsoleColor color = Console.ForegroundColor;
                 Console.ForegroundColor = ConsoleColor.DarkGreen;
-                Console.WriteLine("1. Изменить язык интерфейса \t 2. Добавить  \t 3. Удалить");
-                Console.WriteLine("4. Редактировать \t 5. Поиск  \t 6. Список по критерию");
-                Console.WriteLine("7. Экспорт в файл \t 8. Импорт из файла \t 10. Сохранить \t 11. Выйти из программы ");
-                Console.WriteLine("Введите номер пункта:");
+                switch (localisation = ReadSettings(settings))
+                {
+                    case "ru":
+                        userInerface = RussianInterface;
+                        break;
+                    case "en":
+                        userInerface = EnglishIntarface;
+                        break;
+                    default:
+                        userInerface = RussianInterface;
+                        break;
+                }
+                Console.WriteLine(userInerface.GetMessage());
                 Console.ForegroundColor = color;
                 try
                 {
@@ -35,6 +47,7 @@ namespace Library
                     switch (val)
                     {
                         case 1:
+                            command.ChangeUI(localisation, settings);
                             break;
                         case 2:
                             command.Add();
@@ -58,7 +71,7 @@ namespace Library
                             command.Import();
                             break;
                         case 9:
-                            command.Save();
+                            SerializeToXML(books);
                             break;
                         case 10:
                             flag = false;
@@ -67,7 +80,6 @@ namespace Library
                             Console.WriteLine("Нет такой команды\n");
                             break;
                     }
-
                 }
                 catch (Exception ex)
                 {
@@ -93,8 +105,6 @@ namespace Library
             }
         }
 
-
-
         static public List<Book> DeserializeFromXML(string file)
         {
             XmlSerializer deserializer = new XmlSerializer(typeof(List<Book>));
@@ -108,16 +118,9 @@ namespace Library
         static public void SerializeToXML(List<Book> lib)
         {
             XmlSerializer serializer = new XmlSerializer(typeof(List<Book>));
-            TextWriter textWriter = new StreamWriter(@"lib.xml");
+            TextWriter textWriter = new StreamWriter(library);
             serializer.Serialize(textWriter, lib);
             textWriter.Close();
-        }
-
-        void ChangeInterfaseLocalisation(string datPath)
-        {
-            BinaryReader bReader = new BinaryReader(new FileStream(datPath, FileMode.Open));
-            bool result = bReader.ReadBoolean();
-            bReader.Close();
         }
 
 

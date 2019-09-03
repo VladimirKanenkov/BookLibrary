@@ -20,21 +20,23 @@ namespace LibraryTest
             string str = "Объектно-ориентированное программирование в С++";
             comm.Delete(str);
             Assert.AreEqual(books.Where(n => n.Title == str).Count(), 0);
-
         }
 
         [TestMethod]
         public void AddTest()
-        {
+        {           
             string str1 = ", Шарп Дж, " + "Microsoft Visual C#. 8-е изд., " + "2017, " + "ru, " + "intermediate, " + "C#, " + "great";
-            string str = Guid.NewGuid().ToString() + str1;
-            comm.Add(str);
-            Assert.AreEqual(books.Where(n => n.Title == str.Split(',')[2].Trim()).Count(), 1);
+            string readLine = Guid.NewGuid().ToString() + str1;
+
+            comm.Add(readLine);
+            Assert.AreEqual(books.Where(n => n.Title == readLine.Split(',')[2].Trim()).Count(), 1);
             string str2 = "f57b28be-9835-4a13-9a42-396d797f77bc";
-            str = str2 + str1;
-            comm.Add(str);
-            Assert.AreEqual(books.Where(n => n.ISBN == str2).Count(), 1);
+            readLine = str2 + str1;
+            comm.Add(readLine);
+            Assert.AreEqual(books.Where(n => n.ISBN == str2).Count(), 1);          
         }
+
+        //https://qa-help.ru/questions/s-unit-test-dlya-metoda-kotoryj-vyzyvaet-consolereadline
 
     }
 }

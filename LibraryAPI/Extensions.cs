@@ -10,7 +10,8 @@ namespace LibraryAPI
     {
         public static  string GetString(this Book book)
         {
-            return book.BookLanguage;
+            return book.ISBN + ", " + book.Authors.Name + ", " + book.Title + ", " + book.ReleaseDate
+                + ", " + book.BookLanguage + ", " + book.UserLevel + ", " + book.ProgrammingLanguage + ", " + book.Rating;
         }
     }
 }
