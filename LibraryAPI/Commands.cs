@@ -47,7 +47,7 @@ namespace LibraryAPI
         /// <param name="str"></param>
         public void Delete(string str="")
         {
-            Console.WriteLine("Введите название книги которую вы хотите удалить") ;
+            Console.WriteLine("Введите название книги, которую вы хотите удалить") ;
             string name = (str == "" ? Console.ReadLine() : str);
             foreach (Book book in Books.Where(b => b.Title == name))
             {
@@ -58,6 +58,11 @@ namespace LibraryAPI
             }
         }
 
+        /// <summary>
+        /// Сменить язык интерфейса
+        /// </summary>
+        /// <param name="localisation"></param>
+        /// <param name="fileName"></param>
         public void ChangeUI(string localisation, string fileName)
         {
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Open)))
@@ -79,17 +84,47 @@ namespace LibraryAPI
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Поиск книги по автору или названию
+        /// </summary>
         public void Find()
         {
-            Console.WriteLine("Введите часть имени автора или названия:");
+            bool flag = true;
+            string str;
+            while (flag)
+            {
+                ConsoleColor color = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                Console.WriteLine("\n1. По ISBN\t2. По автору\t 3. По названию\t 4. Выйти");
+                Console.ForegroundColor = color;
+                int val = Convert.ToInt32(Console.ReadLine());
 
-            throw new NotImplementedException();
-
-            //Console.WriteLine("1. ISBN\t 2. Имя автора \t 3. Название (или фрагмент названия)");
-            //Console.WriteLine(Books[0].GetString());
-
+                switch (val)
+                {
+                    
+                    case 2:
+                        Console.WriteLine("Введите имя или часть имени автора:");
+                        str = Console.ReadLine().ToLower();
+                        Books.GetWriteLines(t => t.Authors.Name.ToLower().Contains(str));
+                        break;
+                    case 3:
+                        Console.WriteLine("Введите название или часть названия:");
+                        str = Console.ReadLine().ToLower();
+                        Books.GetWriteLines(t => t.Title.ToLower().Contains(str));
+                        break;
+                    case 4:
+                        flag = false;
+                        continue;
+                    default:
+                        Console.WriteLine("Нет такой команды\n");
+                        break;
+                }
+            }
         }
 
+        /// <summary>
+        /// Вывод списка книг по заданному критерию
+        /// </summary>
         public void List()
         {
             bool flag = true;
@@ -103,6 +138,7 @@ namespace LibraryAPI
                 "Введите номер пункта:");
                 Console.ForegroundColor = color;
                 int val = Convert.ToInt32(Console.ReadLine());
+                string str;
 
                 switch (val)
                 {
@@ -111,29 +147,36 @@ namespace LibraryAPI
                         break;
                     case 2:
                         Console.WriteLine("Введите имя или часть имени автора:");
-                        string str = Console.ReadLine().ToLower();
-                        Books.Where(t => t.Authors.Name.ToLower().Contains(str)).ToList()
-                            .ForEach((n) => Console.WriteLine(n.ToString() + "\n"));
+                        str = Console.ReadLine().ToLower();
+                        Books.GetWriteLines(t => t.Authors.Name.ToLower().Contains(str));
                         break;
                     case 3:
-                        Console.WriteLine("Введите название языка программирования"+
-                            "(возможные варианты: " + Books.GroupBy(i => i.ProgrammingLanguage)
-                            .Select(i => i.Key)
-                            .Aggregate((i, j) => i + " ," + j) + "):");
+                        Console.WriteLine("Введите название языка программирования" +
+                            " (возможные варианты: " + Books.GetUnique(i => i.ProgrammingLanguage) + "):");
                         str = Console.ReadLine().ToLower();
-                        Books.Where(t => t.ProgrammingLanguage.ToLower().Contains(str)).ToList()
-                            .ForEach((n) => Console.WriteLine(n.ToString() + "\n"));
+                        Books.GetWriteLines(t => t.ProgrammingLanguage.ToLower() == str);
                         break;
                     case 4:
+                        Console.WriteLine("Введите рейтинг книги" +
+                            " (возможные варианты: " + Books.GetUnique(i => i.Rating.ToString()) + "):");
+                        str = Console.ReadLine().ToLower();
+                        Books.GetWriteLines(t => t.Rating.ToString().ToLower() == str);
+                        break;
+                    case 5:
+                        Console.WriteLine("Введите сложность книги" +
+                        " (возможные варианты: " + Books.GetUnique(i => i.UserLevel.ToString()) + "):");
+                        str = Console.ReadLine().ToLower();
+                        Books.GetWriteLines(t => t.UserLevel.ToString().Contains(str));
                         break;
                     case 6:
                         flag = false;
                         continue;
+
                     default:
                         Console.WriteLine("Нет такой команды\n");
                         break;
                 }
-            }           
+            }
         }
 
         public void Export()

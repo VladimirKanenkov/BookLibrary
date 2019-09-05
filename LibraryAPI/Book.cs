@@ -8,6 +8,9 @@ namespace LibraryAPI
 {
     public class Book
     {
+        /// <summary>
+        /// Для упрощения использовал new Guid().ToString();
+        /// </summary>
         public string ISBN { get; set; }
         public Author Authors { get; set; }
         public string Title { get; set; }
@@ -15,7 +18,7 @@ namespace LibraryAPI
         /// <summary>
         /// Язык на котором написана книга
         /// </summary>
-        public string BookLanguage { get; set; }
+        public string Language { get; set; }
         /// <summary>
         /// Сложность книги
         /// </summary>
@@ -32,11 +35,11 @@ namespace LibraryAPI
         public Book(string iSBN, string name, string title, string releaseDate, 
             string language, string userLevel, string programmingLanguage, string rating)
         {
-            ISBN = iSBN;  //new Guid().ToString();
+            ISBN = iSBN;
             Authors = new Author(name);
             Title = title;
             ReleaseDate = int.Parse(releaseDate);
-            BookLanguage = language;
+            Language = language;
             UserLevel = (Level)Enum.Parse(typeof(Level), userLevel);
             ProgrammingLanguage = programmingLanguage;
             Rating = (Grade)Enum.Parse(typeof(Grade), rating);
@@ -49,7 +52,7 @@ namespace LibraryAPI
         public override string ToString()
         {
             return string.Format(ISBN + ", " + Authors.Name + ", " + Title + ", " + ReleaseDate
-                + ", " + BookLanguage + ", " + UserLevel + ", " + ProgrammingLanguage + ", " + Rating);
+                + ", " + Language + ", " + UserLevel + ", " + ProgrammingLanguage + ", " + Rating);
         }
     }
 

@@ -21,7 +21,6 @@ namespace LibraryAPI
         }
 
     }
-
     public class EnglishUI : IUserInterface
     {
         public string GetMessage()
